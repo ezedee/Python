@@ -1,8 +1,25 @@
 #!/usr/bin/env python
 import requests
 import re
-import subprocess
 import optparse
+import PySimpleGUI as sg
+import sys
+
+
+def gui():
+    layout = [[sg.Text('Enter a number:'), sg.Input()],
+              [sg.Button('Calculate'), sg.Button('Exit')]]
+
+    window = sg.Window('Calculator', layout)
+
+    while True:
+        event, values = window.read()
+        url = [window.read()]
+        if event == 'Calculate':
+            result = 1
+
+        elif event == 'Exit' or event == sg.WIN_CLOSED:
+            sys.exit()
 
 
 def get_argument():
@@ -51,48 +68,60 @@ with open("ez.text", 'wb') as f:
 
 arr = []
 
-with open('ez.text', 'r') as in_file:
-    for line in in_file:
-        if 'http' in line:
-            result = re.search('https:.*.\.js', line)
-            if result:
-                arr.append(result.group(0))
 
+def search(a, b, arr):
+    with open(a, 'r') as in_file:
+        for line in in_file:
+            if 'http' in line:
+                result = re.search(b, line)
+                if result:
+                    arr.append(result.group(0))
+
+
+search('ez.text', 'https:.*.\.js', arr)
 # for i in range(0, len(arr)):
-   # print(arr[i])
+# print(arr[i])
 
 Arr_2 = []
 
-# Iterating values in Arr_1
-for item in arr:
-    # split the values in each item using "," separator.
-    for i in item.split(","):
-        # append each value in after splitiing into Arr_2
-        Arr_2.append(i)
 
+# Iterating values in Arr_1
+def splitarr(arr, Arr_2):
+    for item in arr:
+        # split the values in each item using "," separator.
+        for i in item.split(","):
+            # append each value in after splitiing into Arr_2
+            Arr_2.append(i)
+
+
+splitarr(arr, Arr_2)
 # printing arrays
 
 
 # for i in range(0, len(Arr_2)):
-   # print(Arr_2[i])
+# print(Arr_2[i])
 
 print("////////////////////////////////////////////////////////////////////////////////////////////")
-with open("dom.text", "w") as txt_file:
-    for line in Arr_2:
-        txt_file.write("".join(line) + "\n")
 
+
+def arrtotext(a, Arr_2):
+    with open(a, "w") as txt_file:
+        for line in Arr_2:
+            txt_file.write("".join(line) + "\n")
+
+
+arrtotext("dom.text", Arr_2)
 ee = []
-with open('dom.text', 'r') as in_file:
-    for line in in_file:
-        if 'http' in line:
-            result = re.search('https:.*.\.js', line)
-            if result:
-                ee.append(result.group(0))
+search('dom.text', 'https:.*.\.js', ee)
 
-for i in range(0, len(ee)):
-    print(ee[i])
 
-s = "Hello\n"
+def printarr(ee):
+    for i in range(0, len(ee)):
+        print(ee[i])
+
+
+printarr(ee)
+
 
 # for k in range(0, len(ee)):
 #  try:
@@ -122,7 +151,7 @@ for k in range(0, len(ee)):
 
 # print("////////////////////////////////////////////////////////////////////////////////////////////")
 # for o in range(0, len(java)):
-  #  print(java[o], len(java))
+    #  print(java[o], len(java))
 
 
 print("////////////////////////////////////////////////////////////////////////////////////////////")
@@ -153,9 +182,8 @@ def my_function(path, values, type):
             print("ther is a possibility website infaction", type)
         else:
             print("the website clear", type)
-
-
 # Close the file
+
 
 my_function("f.text", values, "on DOM XSS")
 my_function("f.text", values1, "on open-redirection vulnerabilities")
